@@ -18,6 +18,10 @@
 
 Hệ thống cho phép người dùng đặt câu hỏi bằng ngôn ngữ tự nhiên về luật giao thông (mức phạt, thẩm quyền xử lý, thủ tục hành chính...) và nhận câu trả lời được trích dẫn trực tiếp từ văn bản pháp luật gốc (Nghị định, Luật), nhằm hạn chế tối đa hiện tượng "ảo giác" (hallucination) thường gặp ở các mô hình ngôn ngữ lớn.
 
+![Giao diện chat của ứng dụng](images/Screenshot-1.png)
+ 
+![Quản lý phiên hội thoại](images/Screenshot-2.png)
+
 **Tính năng chính:**
 
 - Tư vấn pháp lý dựa trên dữ liệu PDF được nạp sẵn, trả lời bám sát ngữ cảnh truy xuất được.
@@ -59,7 +63,7 @@ Hệ thống cho phép người dùng đặt câu hỏi bằng ngôn ngữ tự 
 - **RAM:** Tối thiểu 16 GB
 - **GPU:** Không bắt buộc; khuyến nghị dùng GPU rời (GTX 1650, RTX 2060 trở lên) để tăng tốc suy luận qua Vulkan backend
 - **Ổ cứng:** Tối thiểu 10 GB trống (cho mô hình AI và dữ liệu)
-- **Python:** 3.10+ (chỉ cần khi chạy từ mã nguồn, không cần khi dùng bản build sẵn)
+- **Python:** 3.12 
 
 ## Cấu trúc thư mục
 
