@@ -1,6 +1,13 @@
+<div align="center">
+
 # Trợ Lý AI Tư Vấn Luật Giao Thông Đường Bộ (Offline)
 
-Ứng dụng desktop Windows tích hợp kiến trúc **RAG (Retrieval-Augmented Generation)** chạy **100% offline**, hỗ trợ tra cứu và tư vấn các quy định, mức xử phạt vi phạm hành chính trong lĩnh vực giao thông đường bộ Việt Nam. Toàn bộ pipeline từ embedding, reranking đến sinh câu trả lời đều được thực thi cục bộ trên máy người dùng, không phụ thuộc vào API hoặc kết nối internet.
+![Python](https://img.shields.io/badge/python-3.12-blue.svg)
+![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-0078D6.svg)
+
+</div>
+
+Ứng dụng desktop Windows tích hợp kiến trúc **RAG** chạy **100% offline**, hỗ trợ tra cứu và tư vấn các quy định, mức xử phạt vi phạm hành chính trong lĩnh vực giao thông đường bộ Việt Nam. Toàn bộ pipeline từ embedding, reranking đến sinh câu trả lời đều được thực thi cục bộ trên máy người dùng, không phụ thuộc vào API hoặc kết nối internet.
 
 ## Mục lục
 
@@ -11,12 +18,20 @@
 - [Cài đặt & Chạy từ mã nguồn](#cài-đặt--chạy-từ-mã-nguồn)
 - [Build ứng dụng thực thi (.exe)](#build-ứng-dụng-thực-thi-exe)
 - [Khắc phục lỗi thường gặp](#khắc-phục-lỗi-thường-gặp)
-- [Nguồn dữ liệu](#Nguồn-dữ-liệu)
+- [Nguồn dữ liệu](#nguồn-dữ-liệu)
+- [Giới hạn đã biết](#giới-hạn-đã-biết)
 - [Giấy phép & Ghi nhận](#giấy-phép--ghi-nhận)
 
 ## Tổng quan
 
 Hệ thống cho phép người dùng đặt câu hỏi bằng ngôn ngữ tự nhiên về luật giao thông (mức phạt, thẩm quyền xử lý, thủ tục hành chính...) và nhận câu trả lời được trích dẫn trực tiếp từ văn bản pháp luật gốc (Nghị định, Luật), nhằm hạn chế tối đa hiện tượng "ảo giác" (hallucination) thường gặp ở các mô hình ngôn ngữ lớn.
+
+<div align="center">
+  <img src="images/Screenshot-1.png" alt="Giao diện chat của ứng dụng" width="48%">
+  <img src="images/Screenshot-2.png" alt="Quản lý phiên hội thoại" width="48%">
+</div>
+
+<p align="center"><em>Giao diện chat và quản lý phiên hội thoại</em></p>
 
 **Tính năng chính:**
 
@@ -59,7 +74,7 @@ Hệ thống cho phép người dùng đặt câu hỏi bằng ngôn ngữ tự 
 - **RAM:** Tối thiểu 16 GB
 - **GPU:** Không bắt buộc; khuyến nghị dùng GPU rời (GTX 1650, RTX 2060 trở lên) để tăng tốc suy luận qua Vulkan backend
 - **Ổ cứng:** Tối thiểu 10 GB trống (cho mô hình AI và dữ liệu)
-- **Python:** 3.10+ (chỉ cần khi chạy từ mã nguồn, không cần khi dùng bản build sẵn)
+- **Python:** 3.12 
 
 ## Cấu trúc thư mục
 
@@ -86,7 +101,8 @@ THƯ_MỤC_DỰ_ÁN/
         └── model.onnx
 ```
 
-> **Lưu ý:** Thư mục `models/`, `llama-b8644-bin-win-vulkan-x64/`, `chroma_db/` và `chat_history.db` không được đưa vào repository do dung lượng lớn hoặc chứa dữ liệu runtime. Cần tải/tạo riêng theo hướng dẫn dưới đây.
+> [!NOTE]
+> Thư mục `models/`, `llama-b8644-bin-win-vulkan-x64/`, `chroma_db/` và `chat_history.db` không được đưa vào repository do dung lượng lớn hoặc chứa dữ liệu runtime. Cần tải/tạo riêng theo hướng dẫn dưới đây.
 
 ### Tải llama.cpp
 
@@ -147,9 +163,11 @@ xcopy /E /I /Y "data" "dist\TroLyLuatGT\data"
 xcopy /E /I /Y "llama-b8644-bin-win-vulkan-x64" "dist\TroLyLuatGT\llama-b8644-bin-win-vulkan-x64"
 ```
 
+> [!IMPORTANT]
 > Lưu ý phiên bản llama.cpp khi sao chép — tên thư mục phải khớp với giá trị `LLAMA_SERVER_PATH` cấu hình trong `config.py`.
 
-**(Tùy chọn)** Sao chép sẵn `chroma_db/` đã được khởi tạo để bản đóng gói không phải tạo lại vector database khi chạy lần đầu:
+> [!TIP]
+> Có thể sao chép sẵn `chroma_db/` đã được khởi tạo để bản đóng gói không phải tạo lại vector database khi chạy lần đầu (tùy chọn):
 
 ```powershell
 xcopy /E /I /Y "chroma_db" "dist\TroLyLuatGT\chroma_db"
@@ -170,7 +188,20 @@ xcopy /E /I /Y "chroma_db" "dist\TroLyLuatGT\chroma_db"
 - **Dữ liệu huấn luyện/tra cứu (data/):** thu thập từ [Cổng thông tin điện tử Chính phủ](https://chinhphu.vn/) và [Thư viện Pháp luật](https://thuvienphapluat.vn/phap-luat/ho-tro-phap-luat/luat-giao-thong-2025-va-cac-nghi-dinh-thong-tu-huong-dan-moi-nhat-luat-giao-thong-2025-gom-cac-luat-939767-198964.html).
 - **Dữ liệu kiểm thử:** sử dụng bộ dữ liệu công khai [Dataset TrafficLaw](https://www.kaggle.com/datasets/chngnguynminhhong/dataset-trafficlaw?resource=download) trên Kaggle.
 
+> [!NOTE]
 > Dữ liệu chỉ phục vụ mục đích nghiên cứu/học thuật. Vui lòng kiểm tra lại tính cập nhật của văn bản pháp luật trước khi áp dụng vào thực tế.
+
+## Giới hạn đã biết
+
+> [!WARNING]
+> Đây là công cụ hỗ trợ tra cứu, **không thay thế tư vấn pháp lý chính thức** từ luật sư hoặc cơ quan có thẩm quyền. Vui lòng đối chiếu với văn bản pháp luật gốc trước khi áp dụng vào thực tế.
+
+- **Dữ liệu có thể lỗi thời:** Hệ thống chỉ trả lời dựa trên các văn bản PDF đã nạp sẵn trong `data/`. Nếu văn bản luật được sửa đổi/thay thế sau thời điểm cập nhật dữ liệu, câu trả lời có thể không còn chính xác.
+- **Không tự động cập nhật luật mới:** Việc bổ sung văn bản luật mới cần thực hiện thủ công (thêm PDF vào `data/` và xóa `chroma_db/` để hệ thống tái tạo vector database).
+- **Giới hạn của mô hình ngôn ngữ:** Qwen3.5-4B là mô hình cỡ nhỏ để có thể chạy offline trên máy cá nhân, có thể suy luận chưa chính xác trong các tình huống pháp lý phức tạp, nhiều tình tiết chồng chéo.
+- **Phụ thuộc vào chất lượng truy xuất (RAG):** Nếu câu hỏi dùng từ ngữ khác biệt lớn so với văn bản luật gốc, hệ thống có thể không truy xuất được ngữ cảnh phù hợp và từ chối trả lời thay vì suy đoán.
+- **Chưa có unit test tự động:** Project hiện chỉ có script đánh giá chất lượng RAG (`evaluate_rag.py`, cần Groq API key), chưa có bộ kiểm thử tự động cho toàn bộ pipeline.
+- **Chỉ hỗ trợ Windows:** Do phụ thuộc Windows Job Object để quản lý tiến trình `llama-server.exe` và bản build PyInstaller riêng cho Windows, ứng dụng hiện chưa chạy được trên macOS/Linux.
 
 ## Giấy phép & Ghi nhận
 
