@@ -4,6 +4,9 @@
 
 ![Python](https://img.shields.io/badge/python-3.12-blue.svg)
 ![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-0078D6.svg)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+[![Download](https://img.shields.io/badge/Download_Bản_Đóng_Gói-Google_Drive-34A853?style=for-the-badge&logo=google-drive&logoColor=white)](https://drive.google.com/file/d/1Yznagqe8vy9AHBMBq_Nc42PZaMpNbRqt/view?usp=sharing)
 
 </div>
 
@@ -203,9 +206,27 @@ xcopy /E /I /Y "chroma_db" "dist\TroLyLuatGT\chroma_db"
 - **Chưa có unit test tự động:** Project hiện chỉ có script đánh giá chất lượng RAG (`evaluate_rag.py`, cần Groq API key), chưa có bộ kiểm thử tự động cho toàn bộ pipeline.
 - **Chỉ hỗ trợ Windows:** Do phụ thuộc Windows Job Object để quản lý tiến trình `llama-server.exe` và bản build PyInstaller riêng cho Windows, ứng dụng hiện chưa chạy được trên macOS/Linux.
 
-## Giấy phép & Ghi nhận
+## Giấy phép dự án
+Dự án này được phân phối dưới giấy phép **[MIT License](LICENSE)**. Bạn hoàn toàn có quyền sử dụng, sao chép, sửa đổi, sáp nhập, xuất bản, phân phối hoặc thương mại hóa mã nguồn theo các điều khoản của giấy phép.
 
-- Mô hình suy luận sử dụng runtime [llama.cpp](https://github.com/ggml-org/llama.cpp) (giấy phép MIT).
-- Vector store sử dụng [ChromaDB](https://www.trychroma.com/).
-- Giao diện xây dựng bằng [Flet](https://flet.dev/).
-- Dự án phục vụ mục đích nghiên cứu/học thuật. Vui lòng tham khảo giấy phép sử dụng của từng mô hình AI thành phần (Qwen, Vietnamese Embedding, gte-multilingual-reranker) trước khi triển khai cho mục đích thương mại.
+### Giấy phép bên thứ ba & Mô hình AI
+Mã nguồn dự án tuân thủ giấy phép của các thư viện và mô hình AI nguồn mở được tích hợp:
+
+| Thành phần | Nhà phát triển / Nguồn | Giấy phép |
+|---|---|---|
+| [llama.cpp](https://github.com/ggml-org/llama.cpp) | ggml | MIT License |
+| [LangChain](https://github.com/langchain-ai/langchain) | LangChain, Inc. | MIT License |
+| [Flet](https://flet.dev/) | Appveyor Systems Inc. | Apache 2.0 |
+| [ChromaDB](https://www.trychroma.com/) | Chroma Core, Inc. | Apache 2.0 |
+| [Qwen Model](https://github.com/QwenLM) | Alibaba Cloud (Quantized by [Unsloth](https://huggingface.co/unsloth)) | Apache 2.0 |
+| [Vietnamese_Embedding](https://huggingface.co/AITeamVN/Vietnamese_Embedding) | AITeamVN | Apache 2.0 |
+| [gte-multilingual-reranker](https://huggingface.co/Alibaba-NLP/gte-multilingual-reranker-base) | Alibaba NLP | Apache 2.0 |
+| [Dataset TrafficLaw](https://www.kaggle.com/datasets/chngnguynminhhong/dataset-trafficlaw) | ChuongNMHC | Apache 2.0 |
+> [!NOTE]
+> Giấy phép MIT của dự án chỉ áp dụng cho mã nguồn. Trọng số các mô hình AI (Model Weights) và văn bản pháp luật đi kèm chịu sự quản lý bởi các giấy phép và quy định sử dụng độc lập của tác giả/cơ quan ban hành tương ứng.
+
+### Lời cảm ơn (Acknowledgments)
+Xin chân thành cảm ơn cộng đồng mã nguồn mở và các tác giả:
+- Đội ngũ **Alibaba Cloud / Qwen team** và **Unsloth AI** vì các mô hình ngôn ngữ mã nguồn mở chất lượng cao.
+- **AITeamVN** vì mô hình embedding tối ưu cho tiếng Việt.
+- Tác giả bộ dữ liệu **Dataset TrafficLaw** trên Kaggle đã hỗ trợ quá trình kiểm thử và đánh giá RAG.
