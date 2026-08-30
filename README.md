@@ -23,7 +23,7 @@
 - [Khắc phục lỗi thường gặp](#khắc-phục-lỗi-thường-gặp)
 - [Nguồn dữ liệu](#nguồn-dữ-liệu)
 - [Giới hạn đã biết](#giới-hạn-đã-biết)
-- [Giấy phép & Ghi nhận](#giấy-phép--ghi-nhận)
+- [Giấy phép & Lời cảm ơn](#giấy-phép--lời-cảm-ơn)
 
 ## Tổng quan
 
@@ -90,6 +90,11 @@ THƯ_MỤC_DỰ_ÁN/
 ├── requirements.txt                    
 ├── build.spec                          # Cấu hình build PyInstaller
 │
+├── chroma_db/                          # (tự tạo khi chạy lần đầu)
+├── chat_history.db                     # (tự tạo khi chạy lần đầu)
+│
+├── evaluate_rag.py                     # Script đánh giá chất lượng RAG
+├── convert_reranker_onnx.py            # Script chuyển model sang onnx
 ├── data/                               # Tài liệu PDF nguồn (văn bản luật)
 │
 ├── llama-b8644-bin-win-vulkan-x64/     # Runtime llama.cpp (build Vulkan)
@@ -120,6 +125,30 @@ Runtime suy luận LLM sử dụng [llama.cpp](https://github.com/ggml-org/llama
 | `gte-multilingual-reranker-base_ONNX` | Re-rank kết quả truy xuất | [Tải về](https://huggingface.co/Alibaba-NLP/gte-multilingual-reranker-base) |
 
 Sau khi tải, đặt đúng vị trí theo cấu trúc thư mục `models/` ở trên.
+
+### Chuyển đổi model reranker sang ONNX
+
+Khác với `Vietnamese_Embedding` (đã có sẵn bản ONNX trong repo gốc), kho HuggingFace của `gte-multilingual-reranker-base` **chỉ cung cấp bản PyTorch**, cần tự chuyển đổi bằng script `convert_reranker_onnx.py` đi kèm trong project trước khi chạy ứng dụng.
+
+**Bước 1 — Cài các thư viện cần thiết cho việc convert**
+
+```powershell
+pip install torch transformers onnx
+```
+
+> [!NOTE]
+> Cần `transformers >= 4.36.0`. Model dùng kiến trúc tùy biến (`trust_remote_code=True`), script đã xử lý sẵn việc này.
+
+**Bước 2 — Chạy script chuyển đổi**
+
+```powershell
+python convert_reranker_onnx.py
+```
+
+Script sẽ load model PyTorch từ `models/gte-multilingual-reranker-base`, export sang ONNX (opset 17) và lưu tokenizer vào `models/gte-multilingual-reranker-base_ONNX/model.onnx`.
+
+> [!TIP]
+> Sau khi convert thành công, có thể xóa thư mục `models/gte-multilingual-reranker-base` (bản PyTorch gốc, chỉ dùng tạm để convert) để tiết kiệm dung lượng ổ đĩa, ứng dụng chỉ cần bản `_ONNX` ở bước trên.
 
 ## Cài đặt & Chạy từ mã nguồn
 
@@ -206,27 +235,18 @@ xcopy /E /I /Y "chroma_db" "dist\TroLyLuatGT\chroma_db"
 - **Chưa có unit test tự động:** Project hiện chỉ có script đánh giá chất lượng RAG (`evaluate_rag.py`, cần Groq API key), chưa có bộ kiểm thử tự động cho toàn bộ pipeline.
 - **Chỉ hỗ trợ Windows:** Do phụ thuộc Windows Job Object để quản lý tiến trình `llama-server.exe` và bản build PyInstaller riêng cho Windows, ứng dụng hiện chưa chạy được trên macOS/Linux.
 
-## Giấy phép dự án
-Dự án này được phân phối dưới giấy phép **[MIT License](LICENSE)**. Bạn hoàn toàn có quyền sử dụng, sao chép, sửa đổi, sáp nhập, xuất bản, phân phối hoặc thương mại hóa mã nguồn theo các điều khoản của giấy phép.
+## Giấy phép & Lời cảm ơn
+
+Dự án được phân phối dưới giấy phép **[MIT License](LICENSE)**. 
 
 ### Giấy phép bên thứ ba & Mô hình AI
-Mã nguồn dự án tuân thủ giấy phép của các thư viện và mô hình AI nguồn mở được tích hợp:
-
-| Thành phần | Nhà phát triển / Nguồn | Giấy phép |
-|---|---|---|
-| [llama.cpp](https://github.com/ggml-org/llama.cpp) | ggml | MIT License |
-| [LangChain](https://github.com/langchain-ai/langchain) | LangChain, Inc. | MIT License |
-| [Flet](https://flet.dev/) | Appveyor Systems Inc. | Apache 2.0 |
-| [ChromaDB](https://www.trychroma.com/) | Chroma Core, Inc. | Apache 2.0 |
-| [Qwen Model](https://github.com/QwenLM) | Alibaba Cloud (Quantized by [Unsloth](https://huggingface.co/unsloth)) | Apache 2.0 |
-| [Vietnamese_Embedding](https://huggingface.co/AITeamVN/Vietnamese_Embedding) | AITeamVN | Apache 2.0 |
-| [gte-multilingual-reranker](https://huggingface.co/Alibaba-NLP/gte-multilingual-reranker-base) | Alibaba NLP | Apache 2.0 |
-| [Dataset TrafficLaw](https://www.kaggle.com/datasets/chngnguynminhhong/dataset-trafficlaw) | ChuongNMHC | Apache 2.0 |
-> [!NOTE]
-> Giấy phép MIT của dự án chỉ áp dụng cho mã nguồn. Trọng số các mô hình AI (Model Weights) và văn bản pháp luật đi kèm chịu sự quản lý bởi các giấy phép và quy định sử dụng độc lập của tác giả/cơ quan ban hành tương ứng.
+- Giấy phép MIT của dự án **chỉ áp dụng cho mã nguồn**.
+- Các mô hình AI và công cụ tích hợp tuân thủ theo giấy phép riêng của các tác giả/tổ chức phát hành:
+  - **[Qwen 3.5](https://github.com/QwenLM)** (Alibaba Cloud / Quantized by [Unsloth](https://huggingface.co/unsloth)): Apache 2.0
+  - **[Vietnamese Embedding](https://huggingface.co/AITeamVN/Vietnamese_Embedding)** (AITeamVN): Apache 2.0
+  - **[gte-multilingual-reranker](https://huggingface.co/Alibaba-NLP/gte-multilingual-reranker-base)** (Alibaba NLP): Apache 2.0
+  - **[llama.cpp](https://github.com/ggml-org/llama.cpp)** (ggml): MIT License
+  - **[Dataset TrafficLaw](https://www.kaggle.com/datasets/chngnguynminhhong/dataset-trafficlaw)** (ChuongNMHC): Apache 2.0
 
 ### Lời cảm ơn (Acknowledgments)
-Xin chân thành cảm ơn cộng đồng mã nguồn mở và các tác giả:
-- Đội ngũ **Alibaba Cloud / Qwen team** và **Unsloth AI** vì các mô hình ngôn ngữ mã nguồn mở chất lượng cao.
-- **AITeamVN** vì mô hình embedding tối ưu cho tiếng Việt.
-- Tác giả bộ dữ liệu **Dataset TrafficLaw** trên Kaggle đã hỗ trợ quá trình kiểm thử và đánh giá RAG.
+Xin chân thành cảm ơn đội ngũ **Alibaba Cloud / Unsloth AI**, nhóm tác giả **AITeamVN**, và tác giả bộ dữ liệu **ChuongNMHC** đã chia sẻ các tài nguyên mã nguồn mở quý giá cho cộng đồng.
