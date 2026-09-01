@@ -2,11 +2,11 @@
 
 # Trợ Lý AI Tư Vấn Luật Giao Thông Đường Bộ (Offline)
 
+[![Download](https://img.shields.io/badge/Tải_về-Windows_x64-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://drive.google.com/file/d/1Yznagqe8vy9AHBMBq_Nc42PZaMpNbRqt/view?usp=sharing)
+
 ![Python](https://img.shields.io/badge/python-3.12-blue.svg)
 ![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-0078D6.svg)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-
-[![Download](https://img.shields.io/badge/Download_Bản_Đóng_Gói-Google_Drive-34A853?style=for-the-badge&logo=google-drive&logoColor=white)](https://drive.google.com/file/d/1Yznagqe8vy9AHBMBq_Nc42PZaMpNbRqt/view?usp=sharing)
 
 </div>
 
